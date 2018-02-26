@@ -1,41 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Login.Models;
+﻿using Login.Models;
+using Login.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Login.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        public IActionResult Index()
+        private IUserService _userService;
+
+        public UsersController(IUserService userService)
         {
-            return View();
+            _userService = userService;
         }
 
-        [HttpPost("Authenticate")]
-        public IActionResult Authenticate([FromBody]UserDTO user)
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody]UserDTO userDTO)
         {
-            User newUser = new User();
-            List<User> lstUsers = newUser.getUsers();
-            string token = "token";
-            var localUser = lstUsers.SingleOrDefault(x => x.Username == user.Username);
+
+            var localUser = _userService.Authenticate(userDTO.Username, userDTO.Password);
 
             if (localUser == null)
                 return Ok(new { });
 
+            string tokenString = _userService.GenerateToken(localUser);
 
-            if (localUser.Password.Equals(user.Password))
-                return Ok(new
-                {
-                    Username = localUser.Username,
-                    FirstName = localUser.FirstName,
-                    LastName = localUser.LastName,
-                    Token = token
-                });
-            return Ok(new { });
+            return Ok(new
+            {
+                Username = localUser.Username,
+                FirstName = localUser.FirstName,
+                LastName = localUser.LastName,
+                Token = tokenString
+            });
         }
     }
 }
