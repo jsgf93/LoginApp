@@ -10,10 +10,12 @@ export class DashboardComponent implements OnInit {
 
     private currentUser: User;
     constructor() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '');
+        const userJson = localStorage.getItem('currentUser');
+        this.currentUser = userJson !== null ? JSON.parse(userJson) : new User();
     }
 
     ngOnInit() {
+        console.log(this.currentUser);
     }
 
 }

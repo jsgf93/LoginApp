@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
@@ -9,7 +9,9 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-    constructor(private router: Router, private authService: AuthenticationService) { }
+    constructor(private route: ActivatedRoute,
+        private router: Router,
+        private authService: AuthenticationService) { }
 
     ngOnInit() {
         this.authService.logout();
@@ -17,7 +19,6 @@ export class LoginComponent implements OnInit {
 
   authenticate(e:any) {
       e.preventDefault();
-      console.log(e);
       let username = e.target.elements[0].value;
       let password = e.target.elements[1].value;
 
