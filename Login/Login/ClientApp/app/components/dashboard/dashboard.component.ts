@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -8,14 +9,13 @@ import { User } from '../../models/user';
 })
 export class DashboardComponent implements OnInit {
 
-    private currentUser: User;
-    constructor() {
-        const userJson = localStorage.getItem('currentUser');
-        this.currentUser = userJson !== null ? JSON.parse(userJson) : new User();
-    }
+    firstName: string = 'anonymus';
+    lastName: string = 'anonymus';
+    constructor(private authService: AuthenticationService) { }
 
     ngOnInit() {
-        console.log(this.currentUser);
+        this.firstName = this.authService.firstName;
+        this.lastName = this.authService.lastName;
     }
 
 }

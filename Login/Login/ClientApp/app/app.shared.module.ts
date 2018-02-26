@@ -21,10 +21,6 @@ const appRoutes: Routes = [
         path: 'dashboard',
         canActivate: [AuthGuard],
         component: DashboardComponent
-    },
-    {
-        path: '**',
-        redirectTo: ''
     }
 ]
 

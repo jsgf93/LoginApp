@@ -5,9 +5,15 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthenticationService {
-
+    public firstName: string;
+    public lastName: string;
+    private isUserLoggedIn: boolean;
 
     constructor(private http: Http) { }
+
+    getUserLoggedIn() {
+        return this.isUserLoggedIn;
+    }
 
     login(username: string, password: string) {
         let serviceURL = "/api/Users/Authenticate";
@@ -15,15 +21,20 @@ export class AuthenticationService {
             .map((response: Response) => {
                 // login successful if there's a token in the response
                 let user = response.json();
+                console.log(user);
                 if (user && user.token) {
-                    // store user details and token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    this.firstName = user.firstName;
+                    this.lastName = user.lastName;
+                    this.isUserLoggedIn = true;
                 }
             });
     }
 
     logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        this.isUserLoggedIn = false;
+        this.firstName = 'anonymus';
+        this.lastName = 'anonymus';
     }
+
+
 }
