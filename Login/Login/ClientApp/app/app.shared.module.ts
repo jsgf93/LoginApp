@@ -15,12 +15,16 @@ import { AuthenticationService } from './services/authentication.service';
 const appRoutes: Routes = [
     {
         path: '',
+        canActivate: [AuthGuard],
+        component: DashboardComponent
+    },
+    {
+        path: 'login',
         component: LoginComponent
     },
     {
-        path: 'dashboard',
-        canActivate: [AuthGuard],
-        component: DashboardComponent
+        path: '**',
+        redirectTo: ''
     }
 ]
 

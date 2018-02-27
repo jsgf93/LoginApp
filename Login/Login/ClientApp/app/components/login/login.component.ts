@@ -8,6 +8,8 @@ import { AuthenticationService } from '../../services/authentication.service';
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+    private model: any = {};
+    private loading = false;
 
     constructor(
         private router: Router,
@@ -19,14 +21,11 @@ export class LoginComponent implements OnInit {
     }
 
     authenticate(e: any) {
-        e.preventDefault();
-        let username = e.target.elements[0].value;
-        let password = e.target.elements[1].value;
-
-        this.authService.login(username, password)
+        this.loading = true;
+        this.authService.login(this.model.username, this.model.password)
             .subscribe(
             data => {
-                this.router.navigate(['dashboard']);
+                this.router.navigate(['']);
             });
     }
 
