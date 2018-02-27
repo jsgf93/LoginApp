@@ -5,14 +5,17 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthenticationService {
-    public firstName: string;
-    public lastName: string;
+
     private isUserLoggedIn: boolean;
 
     constructor(private http: Http) { }
 
     getUserLoggedIn() {
         return this.isUserLoggedIn;
+    }
+
+    setUserLoggedIn() {
+        this.isUserLoggedIn = true;
     }
 
     login(username: string, password: string) {
@@ -23,8 +26,7 @@ export class AuthenticationService {
                 let user = response.json();
                 console.log(user);
                 if (user && user.token) {
-                    this.firstName = user.firstName;
-                    this.lastName = user.lastName;
+                    localStorage.setItem('currentUser',JSON.stringify(user));
                     this.isUserLoggedIn = true;
                 }
             });
@@ -32,8 +34,7 @@ export class AuthenticationService {
 
     logout() {
         this.isUserLoggedIn = false;
-        this.firstName = 'anonymus';
-        this.lastName = 'anonymus';
+        localStorage.removeItem('currentUser');
     }
 
 

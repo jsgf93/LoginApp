@@ -9,13 +9,12 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class DashboardComponent implements OnInit {
 
-    firstName: string = 'anonymus';
-    lastName: string = 'anonymus';
-    constructor(private authService: AuthenticationService) { }
+    private currentUser: User;
+    
+    constructor(private authService: AuthenticationService) {}
 
     ngOnInit() {
-        this.firstName = this.authService.firstName;
-        this.lastName = this.authService.lastName;
+        this.currentUser = JSON.parse( localStorage.getItem('currentUser') || '{}');
     }
 
 }
